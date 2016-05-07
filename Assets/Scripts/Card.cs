@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ChaosTheoryGames.Audio;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
 using System;
@@ -14,6 +15,10 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     private bool isRotating;
 
     private GameObject attachedMemory;
+
+    [Header("Sounds")]
+    [SerializeField]
+    private SoundHelper flipSound;
 
     // Animator variables
     protected static readonly int CLICK_PARAM = Animator.StringToHash("ClickTrig");
@@ -121,6 +126,10 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         isRotating = true;
 
         _collider.enabled = false;
+
+        if (flipSound != null)
+            flipSound.Play();
+
         yield return StartCoroutine(CR_LerpRotation(towardsRotation, awayRotation, 1f));
         gameObject.SetActive(false);
 
@@ -139,6 +148,9 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     private IEnumerator CR_RotateTowards(Action callback = null)
     {
         isRotating = true;
+
+        if (flipSound != null)
+            flipSound.Play();
 
         _collider.enabled = false;
         yield return StartCoroutine(CR_LerpRotation(awayRotation, towardsRotation, 1f));

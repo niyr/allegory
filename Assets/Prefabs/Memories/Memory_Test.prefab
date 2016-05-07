@@ -928,6 +928,8 @@ MonoBehaviour:
   maxPositionDelta: {x: 0.5, y: 0.5, z: 0}
   maxRotationDelta: {x: 0, y: 0, z: 25}
   maxScaleDelta: {x: 0.1, y: 0.1, z: 0.1}
+  shuffleColor: 1
+  hsbShift: {x: 0.03, y: 0.03, z: 0.03}
 --- !u!114 &11478812
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -943,6 +945,8 @@ MonoBehaviour:
   maxPositionDelta: {x: 0.5, y: 0.5, z: 0}
   maxRotationDelta: {x: 0, y: 0, z: 25}
   maxScaleDelta: {x: 0.1, y: 0.1, z: 0.1}
+  shuffleColor: 0
+  hsbShift: {x: 0, y: 0, z: 0}
 --- !u!114 &11481936
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -955,9 +959,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shuffleChildren: 1
-  maxPositionDelta: {x: 0.5, y: 0.5, z: 0}
+  maxPositionDelta: {x: 0.2, y: 0.2, z: 0}
   maxRotationDelta: {x: 0, y: 0, z: 25}
-  maxScaleDelta: {x: 0.1, y: 0.1, z: 0.1}
+  maxScaleDelta: {x: 0.3, y: 0.3, z: 0}
+  shuffleColor: 1
+  hsbShift: {x: 0.03, y: 0.03, z: 0.03}
 --- !u!114 &11489474
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -973,6 +979,8 @@ MonoBehaviour:
   maxPositionDelta: {x: 0.5, y: 0.5, z: 0}
   maxRotationDelta: {x: 0, y: 0, z: 25}
   maxScaleDelta: {x: 0.1, y: 0.1, z: 0.1}
+  shuffleColor: 0
+  hsbShift: {x: 0, y: 0, z: 0}
 --- !u!114 &11491030
 MonoBehaviour:
   m_ObjectHideFlags: 1

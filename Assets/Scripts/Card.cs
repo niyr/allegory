@@ -105,7 +105,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         IsClosest = false;
         difference = maxDifference;
 
-        memory.transform.SetParent(_transform, false);
+        memory.transform.SetParent(_transform.GetChild(0), false);
         Shuffler[] shufflers = memory.GetComponentsInChildren<Shuffler>();
         foreach (Shuffler s in shufflers)
             s.Shuffle(maxDifference);

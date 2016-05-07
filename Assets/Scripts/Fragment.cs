@@ -66,7 +66,6 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     #region Events
     private void OnFragmentSelected(Fragment selected)
     {
-        Debug.Log("fragment " + groupId);
         if (selected.groupId == groupId && selected != this)
             FadeOut();
     }

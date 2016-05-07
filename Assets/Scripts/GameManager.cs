@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     private void OnCardClicked(Card chosen)
     {
         if (chosen.IsSourceCard)
-            chosen.RotateAway(ShowClones);
+            chosen.RotateAway(ShowClonedCards);
         else
             StartCoroutine(CR_HideClones());
     }
@@ -65,26 +65,23 @@ public class GameManager : MonoBehaviour
         GameObject original = Instantiate(memoryPrefabs[currentMemory]);
         original.transform.SetParent(sourceCard.transform, false);
 
-        foreach (Card c in cardClones)
+        foreach (Card card in cardClones)
         {
             GameObject clone = Instantiate(memoryPrefabs[currentMemory]);
-            clone.transform.SetParent(c.transform, false);
-            Shuffler[] shufflers = clone.GetComponentsInChildren<Shuffler>();
-            foreach (Shuffler s in shufflers)
-                s.Shuffle();
-
-            c.gameObject.SetActive(false);
+            card.Clear();
+            card.AttachMemory(clone);
+            card.gameObject.SetActive(false);
         }
 
-        ShowSourceCard();
+        ShowOriginalCard();
     }
 
-    public void ShowSourceCard()
+    public void ShowOriginalCard()
     {
         sourceCard.RotateTowards();
     }
 
-    public void ShowClones()
+    public void ShowClonedCards()
     {
         foreach (Card c in cardClones)
             c.RotateTowards();

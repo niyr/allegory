@@ -13,6 +13,9 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     private bool isSourceCard;
     private bool isRotating;
 
+    private GameObject attachedMemory;
+
+    // Animator variables
     protected static readonly int CLICK_PARAM = Animator.StringToHash("ClickTrig");
     protected static readonly int TURN_PARAM = Animator.StringToHash("isShown");
     protected static readonly int HIGHLIGHTED_PARAM = Animator.StringToHash("isHighlighted");
@@ -20,8 +23,11 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     private static Quaternion towardsRotation = Quaternion.Euler(0, 0, 0);
     private static Quaternion awayRotation = Quaternion.Euler(0, 180, 0);
 
-    public delegate void CardClickedDelegate(Card chosen);
+    // Events
+    public delegate void CardClickedDelegate(Card chosenCard);
     public static event CardClickedDelegate OnCardClicked = delegate { };
+    public delegate void CardHighlightedDelegate(Card highlightedCard);
+    public static event CardHighlightedDelegate OnCardHighlighted = delegate { };
 
     #region Properties
     public bool IsSourceCard { get { return isSourceCard; } }
@@ -59,6 +65,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public void OnPointerEnter(PointerEventData eventData)
     {
         //_animator.SetBool(HIGHLIGHTED_PARAM, true);
+        OnCardHighlighted(this);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -74,6 +81,34 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     }
     #endregion
 
+    public void Clear()
+    {
+        if (attachedMemory != null)
+            Destroy(attachedMemory);
+    }
+
+    public void AttachMemory(GameObject memory)
+    {
+        if(memory == null)
+        {
+            Debug.LogWarning("[Card]::Trying to attach a null memory.");
+            return;
+        }
+
+        if(attachedMemory != null)
+        {
+            Clear();
+        }
+
+        memory.transform.SetParent(_transform, false);
+        Shuffler[] shufflers = memory.GetComponentsInChildren<Shuffler>();
+        foreach (Shuffler s in shufflers)
+            s.Shuffle();
+
+        attachedMemory = memory;
+    }
+
+    #region Movement
     public void RotateAway(Action callback = null)
     {
         gameObject.SetActive(true);
@@ -126,4 +161,5 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
         _transform.rotation = to;
     }
+    #endregion
 }

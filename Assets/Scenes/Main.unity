@@ -209,7 +209,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+  m_BackGroundColor: {r: 0.88235295, g: 0.88235295, b: 0.88235295, a: 1}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -305,12 +305,6 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 431666, guid: 59124055b6d00594dacf3ee3c9ebc18c, type: 2}
   m_PrefabInternal: {fileID: 166698034}
---- !u!114 &166698036 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 11475514, guid: 59124055b6d00594dacf3ee3c9ebc18c,
-    type: 2}
-  m_PrefabInternal: {fileID: 166698034}
-  m_Script: {fileID: 11500000, guid: e054e280b55a88a489f148df23718b09, type: 3}
 --- !u!4 &188768194 stripped
 Transform:
   m_PrefabParentObject: {fileID: 431666, guid: 59124055b6d00594dacf3ee3c9ebc18c, type: 2}
@@ -555,12 +549,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 59124055b6d00594dacf3ee3c9ebc18c, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &591977201 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 11475514, guid: 59124055b6d00594dacf3ee3c9ebc18c,
-    type: 2}
-  m_PrefabInternal: {fileID: 591977200}
-  m_Script: {fileID: 11500000, guid: e054e280b55a88a489f148df23718b09, type: 3}
 --- !u!1 &658970193
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,12 +611,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 658970193}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &680646910 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 11475514, guid: 59124055b6d00594dacf3ee3c9ebc18c,
-    type: 2}
-  m_PrefabInternal: {fileID: 344144933}
-  m_Script: {fileID: 11500000, guid: e054e280b55a88a489f148df23718b09, type: 3}
 --- !u!1 &738818376
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,12 +818,6 @@ Transform:
   - {fileID: 1930583350}
   m_Father: {fileID: 846605032}
   m_RootOrder: 0
---- !u!114 &1108931464 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 11475514, guid: 59124055b6d00594dacf3ee3c9ebc18c,
-    type: 2}
-  m_PrefabInternal: {fileID: 1278810138}
-  m_Script: {fileID: 11500000, guid: e054e280b55a88a489f148df23718b09, type: 3}
 --- !u!1 &1119862617 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 122558, guid: 1e89ef15616b94044855600290ee52a8, type: 2}
@@ -931,14 +907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 176286cef96844734add20d80e1d5523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sourceCard: {fileID: 166698036}
-  cardClones:
-  - {fileID: 1108931464}
-  - {fileID: 680646910}
-  - {fileID: 591977201}
-  memoryPrefabs:
-  - {fileID: 150220, guid: 1e89ef15616b94044855600290ee52a8, type: 2}
-  - {fileID: 166290, guid: 28c0779c255c17742a9e8a0c6d90ef1c, type: 2}
+  memories: []
   repeatMemory: 0
   loopMemories: 1
   explosionCurve:
@@ -1107,6 +1076,10 @@ Prefab:
     - target: {fileID: 484566, guid: 8e288b1a4a871e148b104c3f99f1ce4f, type: 2}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 178840, guid: 8e288b1a4a871e148b104c3f99f1ce4f, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e288b1a4a871e148b104c3f99f1ce4f, type: 2}
@@ -1391,6 +1364,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 439128, guid: 98528220ebd9c6f44a10803ec245ef91, type: 2}
       propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11445976, guid: 98528220ebd9c6f44a10803ec245ef91, type: 2}
+      propertyPath: disableCursor
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

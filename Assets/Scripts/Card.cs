@@ -26,7 +26,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     // Events
     public delegate void CardClickedDelegate(Card chosenCard);
     public static event CardClickedDelegate OnCardClicked = delegate { };
-    public delegate void CardHighlightedDelegate(Card highlightedCard);
+    public delegate void CardHighlightedDelegate(Card highlightedCard, bool isHighlighted);
     public static event CardHighlightedDelegate OnCardHighlighted = delegate { };
 
     #region Properties
@@ -65,12 +65,13 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public void OnPointerEnter(PointerEventData eventData)
     {
         //_animator.SetBool(HIGHLIGHTED_PARAM, true);
-        OnCardHighlighted(this);
+        OnCardHighlighted(this, true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         //_animator.SetBool(HIGHLIGHTED_PARAM, false);
+        OnCardHighlighted(this, false);
     }
     #endregion
 

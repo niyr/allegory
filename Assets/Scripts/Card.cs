@@ -21,12 +21,12 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     private SoundHelper flipSound;
 
     // Animator variables
-    protected static readonly int CLICK_PARAM = Animator.StringToHash("ClickTrig");
-    protected static readonly int TURN_PARAM = Animator.StringToHash("isShown");
+    protected static readonly int CLICK_PARAM = Animator.StringToHash("clickTrig");
+    protected static readonly int SHOWN_PARAM = Animator.StringToHash("isShown");
     protected static readonly int HIGHLIGHTED_PARAM = Animator.StringToHash("isHighlighted");
 
     private static Quaternion towardsRotation = Quaternion.Euler(0, 0, 0);
-    private static Quaternion awayRotation = Quaternion.Euler(0, 180, 0);
+    private static Quaternion awayRotation = Quaternion.Euler(0, 180, 0); 
 
     // Events
     public delegate void CardClickedDelegate(Card chosenCard);
@@ -69,13 +69,13 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        //_animator.SetBool(HIGHLIGHTED_PARAM, true);
+        _animator.SetBool(HIGHLIGHTED_PARAM, true);
         OnCardHighlighted(this, true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        //_animator.SetBool(HIGHLIGHTED_PARAM, false);
+        _animator.SetBool(HIGHLIGHTED_PARAM, false);
         OnCardHighlighted(this, false);
     }
     #endregion
@@ -83,7 +83,8 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     #region Events
     private void Card_OnCardClicked(Card chosen)
     {
-        //StartCoroutine(CR_RotateAway());
+        if (this == chosen)
+            _animator.SetTrigger(CLICK_PARAM);
     }
     #endregion
 
@@ -101,10 +102,8 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             return;
         }
 
-        if(attachedMemory != null)
-        {
+        if (attachedMemory != null)
             Clear();
-        }
 
         memory.transform.SetParent(_transform, false);
         Shuffler[] shufflers = memory.GetComponentsInChildren<Shuffler>();
@@ -124,6 +123,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     private IEnumerator CR_RotateAway(Action callback = null)
     {
         isRotating = true;
+        _animator.SetBool(SHOWN_PARAM, false);
 
         _collider.enabled = false;
 
@@ -148,6 +148,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     private IEnumerator CR_RotateTowards(Action callback = null)
     {
         isRotating = true;
+        _animator.SetBool(SHOWN_PARAM, true);
 
         if (flipSound != null)
             flipSound.Play();
@@ -155,7 +156,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         _collider.enabled = false;
         yield return StartCoroutine(CR_LerpRotation(awayRotation, towardsRotation, 1f));
         _collider.enabled = true;
-
+        
         isRotating = false;
 
         if (callback != null)

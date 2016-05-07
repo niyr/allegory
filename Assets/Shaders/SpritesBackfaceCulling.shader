@@ -18,9 +18,10 @@
 			"CanUseSpriteAtlas" = "True"
 		}
 
+		Cull Off
 		Lighting Off
 		ZWrite Off
-		Fog{ Mode Off }
+		Fog { Mode Global }
 		Blend One OneMinusSrcAlpha
 
 		Pass

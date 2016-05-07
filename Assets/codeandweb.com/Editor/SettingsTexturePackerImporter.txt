@@ -1,17 +1,17 @@
 version: 2
 importPivots: 1
 tpsheetFileNames:
-- Assets/codeandweb.com/Example/SpriteSheet/sprites.tpsheet
-- Assets/Textures/Memories/Memory_Teen.tpsheet
-- Assets/Textures/Memories/Memory_Baby.tpsheet
 - Assets/Textures/Memories/Memory_Child.tpsheet
+- Assets/Textures/Memories/Memory_Teen.tpsheet
+- Assets/codeandweb.com/Example/SpriteSheet/sprites.tpsheet
+- Assets/Textures/Memories/Memory_Baby.tpsheet
 textureFileNames:
-- Assets/codeandweb.com/Example/SpriteSheet/sprites.png
-- Assets/Textures/Memories/Memory_Teen.png
-- Assets/Textures/Memories/Memory_Baby.png
 - Assets/Textures/Memories/Memory_Child.png
+- Assets/Textures/Memories/Memory_Teen.png
+- Assets/codeandweb.com/Example/SpriteSheet/sprites.png
+- Assets/Textures/Memories/Memory_Baby.png
 normalmapFileNames:
+- 
+- 
 - Assets/codeandweb.com/Example/SpriteSheet/sprites_n.png
-- 
-- 
 - 

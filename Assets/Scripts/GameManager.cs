@@ -22,6 +22,10 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     private bool loopMemories;
 
+    public AnimationCurve explosionCurve;
+    public AnimationCurve rtbCurve;
+    public GameObject fragmentPrefab;
+
     // Score tracking
     private int correctChoices = 0;
 

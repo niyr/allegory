@@ -5,7 +5,9 @@ using UnityEngine.EventSystems;
 
 public class Memory : MonoBehaviour, IPointerClickHandler
 {
+    // CACHED COMPONENTS
     private Transform _transform;
+    private Collider _collider;
 
     public List<GameObject> pieces = new List<GameObject>();
 
@@ -25,6 +27,7 @@ public class Memory : MonoBehaviour, IPointerClickHandler
     protected void Awake()
     {
         _transform = GetComponent<Transform>();
+        _collider = GetComponent<Collider>();
 
         Fragment.OnSelected += OnFragmentSelected;
     }
@@ -32,6 +35,7 @@ public class Memory : MonoBehaviour, IPointerClickHandler
     protected void Start()
     {
         // TODO: Animate into position, then turn collider on
+        AnimateIn();
     }
 
     protected void OnDestroy()
@@ -43,7 +47,8 @@ public class Memory : MonoBehaviour, IPointerClickHandler
     #region Interfaces
     public void OnPointerClick(PointerEventData eventData)
     {
-        Shatter();
+        if(!IsComplete)
+            Shatter();
     }
     #endregion
 
@@ -54,7 +59,8 @@ public class Memory : MonoBehaviour, IPointerClickHandler
 
         if(IsComplete)
         {
-
+            Debug.Log("Complete");
+            OnComplete(this, 0f);
         }
     }
     #endregion
@@ -77,17 +83,43 @@ public class Memory : MonoBehaviour, IPointerClickHandler
                 Fragment fragment = newFragment.GetComponent<Fragment>();
                 go.transform.SetParent(fragment.transform, false);
 
-                fragment.memory = this;
-                fragment.target = orig.transform;
-                fragment.groupId = i;
-
                 Vector3 moveTo = groupLoc + Random.insideUnitSphere * 5f;
-                fragment.Explode(moveTo);
+                fragment.Init(this, i, orig.transform, moveTo);
 
                 fragments.Add(fragment);
             }
 
             orig.SetActive(false);
         }
+
+        _collider.enabled = false;
+    }
+
+    public void AnimateIn()
+    {
+        StartCoroutine(CR_AnimateIn());
+    }
+
+    private IEnumerator CR_AnimateIn()
+    {
+        _collider.enabled = false;
+
+        yield return null;
+
+        _collider.enabled = true;
+    }
+
+    public void AnimateOut()
+    {
+        StartCoroutine(CR_AnimateOut());
+    }
+
+    private IEnumerator CR_AnimateOut()
+    {
+        _collider.enabled = false;
+
+        yield return null;
+
+
     }
 }

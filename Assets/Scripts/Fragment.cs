@@ -1,24 +1,28 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.EventSystems;
-using System;
+using Vectrosity;
+
 using Random = UnityEngine.Random;
 
 public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+    // CACHED COMPONENTS
     private Collider _collider;
-
-    private Vector3 spin;
 
     public float explosionLerpTime = 0.3f;
     public float reassembleLerpTime = 1f;
 
-    public Memory memory;
-    public Transform target;
-    public int groupId;
+    private Memory parent;
+    private Transform target;
+    private int groupId;
 
     private bool isMoving = false;
+    private Vector3 spin;
 
+    private VectorLine line;
+
+    // Events
     public delegate void SelectedDelegate(Fragment selectedFragment);
     public static event SelectedDelegate OnSelected = delegate { };
 
@@ -73,6 +77,19 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             FadeOut();
     }
     #endregion
+
+    public void Init(Memory parent, int groupId, Transform target, Vector3 destination)
+    {
+        this.parent = parent;
+        this.target = target;
+        this.groupId = groupId;
+
+        Shuffler[] shufflers = GetComponentsInChildren<Shuffler>();
+        foreach (Shuffler s in shufflers)
+            s.Shuffle();
+
+        Explode(destination);
+    }
 
     /// <summary>
     /// 

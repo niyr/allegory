@@ -40,9 +40,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51abd4f195d043b40ba6aa729ff253bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  memory: {fileID: 0}
-  target: {fileID: 0}
-  groupId: 0
+  explosionLerpTime: 0.2
+  reassembleLerpTime: 1
 --- !u!135 &13551420
 SphereCollider:
   m_ObjectHideFlags: 1

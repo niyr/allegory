@@ -282,6 +282,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 446640}
+  - 65: {fileID: 6521478}
+  - 114: {fileID: 11475308}
   m_Layer: 0
   m_Name: Memory_Teen
   m_TagString: Untagged
@@ -760,7 +762,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 166290}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 416896}
@@ -957,6 +959,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 416896}
   m_RootOrder: 4
+--- !u!65 &6521478
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166290}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7, y: 12, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &11410358
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -972,6 +986,8 @@ MonoBehaviour:
   maxPositionDelta: {x: 0.2, y: 0.2, z: 0}
   maxRotationDelta: {x: 0, y: 0, z: 5}
   maxScaleDelta: {x: 0.1, y: 0.1, z: 0.1}
+  shuffleColor: 0
+  hsbShift: {x: 0, y: 0, z: 0}
 --- !u!114 &11416960
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -987,6 +1003,8 @@ MonoBehaviour:
   maxPositionDelta: {x: 0.5, y: 0.5, z: 0}
   maxRotationDelta: {x: 0, y: 0, z: 25}
   maxScaleDelta: {x: 0.1, y: 0.1, z: 0.1}
+  shuffleColor: 0
+  hsbShift: {x: 0, y: 0, z: 0}
 --- !u!114 &11431986
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -999,9 +1017,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shuffleChildren: 1
-  maxPositionDelta: {x: 0.5, y: 0.5, z: 0}
+  maxPositionDelta: {x: 0.5, y: 0.2, z: 0}
   maxRotationDelta: {x: 0, y: 0, z: 25}
   maxScaleDelta: {x: 0.1, y: 0.1, z: 0.1}
+  shuffleColor: 1
+  hsbShift: {x: 0.1, y: 0.2, z: 0}
+--- !u!114 &11475308
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1d2929cf9d0ce04babcb89d6a53e015, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pieces:
+  - {fileID: 148738}
+  - {fileID: 129946}
+  - {fileID: 128570}
+  - {fileID: 134656}
+  - {fileID: 157838}
 --- !u!114 &11483560
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1017,6 +1054,8 @@ MonoBehaviour:
   maxPositionDelta: {x: 0.5, y: 0.5, z: 0}
   maxRotationDelta: {x: 0, y: 0, z: 25}
   maxScaleDelta: {x: 0.1, y: 0.1, z: 0.1}
+  shuffleColor: 0
+  hsbShift: {x: 0, y: 0, z: 0}
 --- !u!114 &11493182
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1032,6 +1071,8 @@ MonoBehaviour:
   maxPositionDelta: {x: 0.5, y: 0.5, z: 0}
   maxRotationDelta: {x: 0, y: 0, z: 25}
   maxScaleDelta: {x: 0.1, y: 0.1, z: 0.1}
+  shuffleColor: 1
+  hsbShift: {x: 0.1, y: 0.2, z: 0}
 --- !u!212 &21200498
 SpriteRenderer:
   m_ObjectHideFlags: 1

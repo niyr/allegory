@@ -124,7 +124,7 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         line.material = lineMaterial;
         line.continuousTexture = true;
 
-        line.Draw3DAuto();
+        //line.Draw3DAuto();
     }
 
     /// <summary>

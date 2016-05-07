@@ -104,7 +104,14 @@ public class Memory : MonoBehaviour, IPointerClickHandler
     {
         _collider.enabled = false;
 
-        yield return null;
+        Vector3 startPos = transform.position + new Vector3(0, 0, 60);
+        Vector3 endPos = transform.position;
+
+        for (float t = 0f; t < 1f; t += Time.deltaTime * 0.5f)
+        {
+            transform.position = Vector3.Lerp(startPos, endPos, t);
+            yield return null;
+        }
 
         _collider.enabled = true;
     }
@@ -118,8 +125,13 @@ public class Memory : MonoBehaviour, IPointerClickHandler
     {
         _collider.enabled = false;
 
-        yield return null;
+        Vector3 startPos = transform.position;
+        Vector3 endPos = Camera.main.transform.position - new Vector3(0, 0, 1);
 
-
+        for(float t = 0f; t < 1f; t += Time.deltaTime * 0.5f)
+        {
+            transform.position = Vector3.Lerp(startPos, endPos, t);
+            yield return null;
+        }
     }
 }

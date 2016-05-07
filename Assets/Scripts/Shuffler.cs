@@ -34,20 +34,26 @@ public class Shuffler : MonoBehaviour
 		}
 	}
 
-    public void Shuffle()
+    public float Shuffle(float maxDifference = 1f)
     {
+        float delta = 0f;
         foreach (Transform t in children)
-            Shuffle(t);
+            delta += ShuffleChildren(t, maxDifference);
+
+        return delta;
     }
 
-	private void Shuffle(Transform target)
+	private float ShuffleChildren(Transform target, float maxDifference)
 	{
-		Vector3 pos = Vector3.Scale(Random.onUnitSphere, maxPositionDelta);
-		Quaternion rot = Quaternion.Euler(Vector3.Scale(Random.onUnitSphere, maxRotationDelta));
-		Vector3 scale = Vector3.Scale(Random.onUnitSphere, maxScaleDelta);
+		Vector3 pos = Vector3.Scale(Random.onUnitSphere * maxDifference, maxPositionDelta);
+		Quaternion rot = Quaternion.Euler(Vector3.Scale(Random.onUnitSphere * maxDifference, maxRotationDelta));
+		Vector3 scale = Vector3.Scale(Random.onUnitSphere * maxDifference, maxScaleDelta);
 
 		target.position += pos;
 		target.rotation *= rot;
 		target.localScale += scale;
+
+        // TODO: fix this calculation
+        return pos.sqrMagnitude + scale.sqrMagnitude;
 	}
 }

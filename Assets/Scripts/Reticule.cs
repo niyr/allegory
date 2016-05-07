@@ -8,18 +8,13 @@ public class Reticule : MonoBehaviour
     private Transform _transform;
     private Animator _animator;
 
-    private float zDepth;
-
     private static readonly int HOVER_PARAM = Animator.StringToHash("isHovering");
     private static readonly int MOUSEDOWN_PARAM = Animator.StringToHash("isMouseDown");
-    private static readonly int CLICK_PARAM = Animator.StringToHash("clickTrig");
 
     protected void Awake()
     {
         _transform = GetComponent<Transform>();
         _animator = GetComponent<Animator>();
-
-        zDepth = _transform.localPosition.z;
 
         //Cursor.visible = false;
     }
@@ -45,9 +40,6 @@ public class Reticule : MonoBehaviour
 
     private bool IsHoveringOverCollider()
     {
-        // Create ray from current position
-        Ray ray = new Ray(_transform.position, Camera.main.transform.forward);
-
 #if UNITY_EDITOR
         Color lineColor = Input.GetMouseButton(0) ? Color.red : Color.green;
         Debug.DrawRay(_transform.position, Camera.main.transform.forward * Camera.main.farClipPlane, lineColor, 0.016f);

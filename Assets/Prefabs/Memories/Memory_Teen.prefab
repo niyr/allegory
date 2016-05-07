@@ -283,7 +283,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 446640}
   m_Layer: 0
-  m_Name: Teen object
+  m_Name: Memory_Teen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

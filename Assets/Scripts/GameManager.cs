@@ -22,6 +22,9 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     private bool loopMemories;
 
+    // Score tracking
+    private int correctChoices = 0;
+
 	#region MonoBehaviour Lifecycle
 	protected void Awake()
 	{
@@ -39,9 +42,16 @@ public class GameManager : Singleton<GameManager>
     private void OnCardClicked(Card chosen)
     {
         if (chosen.IsSourceCard)
+        {
             chosen.RotateAway(ShowClonedCards);
+        }
         else
+        {
+            if (chosen.IsClosest)
+                correctChoices++;
+
             StartCoroutine(CR_HideClones());
+        }
     }
     #endregion
 
@@ -62,17 +72,22 @@ public class GameManager : Singleton<GameManager>
             }
         }
 
+        // Create a clone of the memory and insert it into the original card
         GameObject original = Instantiate(memoryPrefabs[currentMemory]);
-        original.transform.SetParent(sourceCard.transform, false);
+        sourceCard.AttachMemory(original, 0f);
 
+        // Create clones of the memory to insert into the cloned cards,
+        //  with varying degrees of difference
         foreach (Card card in cardClones)
         {
             GameObject clone = Instantiate(memoryPrefabs[currentMemory]);
+            // TODO: get this as a spread of values rather than pure random
             float difference = Random.Range(0f, 1f);
             card.AttachMemory(clone, difference);
             card.gameObject.SetActive(false);
         }
 
+        // Set the card with the least difference to be the 'right' choice
         cardClones.OrderByDescending(card => card.Difference).Last().IsClosest = true;
 
         ShowOriginalCard();

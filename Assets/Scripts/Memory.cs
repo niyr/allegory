@@ -10,6 +10,13 @@ public class Memory : MonoBehaviour, IPointerClickHandler
 
     private List<Fragment> fragments = new List<Fragment>();
 
+    #region Interfaces
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Shatter();
+    }
+    #endregion
+
     public void Shatter()
     {
         for(int i = 0; i < pieces.Count; i++)
@@ -26,17 +33,13 @@ public class Memory : MonoBehaviour, IPointerClickHandler
                 f.target = orig.transform;
                 f.groupId = i;
 
-                f.Explode();
+                Vector3 moveTo = go.transform.position + UnityEngine.Random.insideUnitSphere * 20f;
+                f.Explode(moveTo);
 
                 fragments.Add(f);
             }
 
             orig.SetActive(false);
         }
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        Shatter();
     }
 }

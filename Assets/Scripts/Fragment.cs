@@ -74,10 +74,9 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     /// <summary>
     /// 
     /// </summary>
-    public void Explode()
+    public void Explode(Vector3 targetPosition)
     {
-        Vector3 targetPos = transform.position + Random.insideUnitSphere * 20f;
-        StartCoroutine(CR_Explode(targetPos, 0.2f));
+        StartCoroutine(CR_Explode(targetPosition, 0.2f));
     }
 
     private IEnumerator CR_Explode(Vector3 targetPos, float duration = 0.2f)
@@ -140,8 +139,6 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private IEnumerator CR_FadeOut()
     {
-        Debug.Log(gameObject.name + " fading");
-
         yield return new WaitForSeconds(0.1f);
 
         Destroy(gameObject);

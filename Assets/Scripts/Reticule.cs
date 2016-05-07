@@ -16,13 +16,13 @@ public class Reticule : MonoBehaviour
         _transform = GetComponent<Transform>();
         _animator = GetComponent<Animator>();
 
-        //Cursor.visible = false;
+        Cursor.visible = false;
     }
 
     protected void Update()
     {
         // Update position based on mouse position
-        _transform.localPosition = GetWorldPositionOnPlane(Input.mousePosition, 0f);
+        //_transform.localPosition = GetWorldPositionOnPlane(Input.mousePosition, 0f);
         // If hovering over something, set Animator
         _animator.SetBool(HOVER_PARAM, IsHoveringOverCollider());
         // If holding the left mouse button down, set Animator

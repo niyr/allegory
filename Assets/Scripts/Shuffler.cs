@@ -26,28 +26,25 @@ public class Shuffler : MonoBehaviour
 		if(shuffleChildren)
 		{
 			foreach(Transform t in _transform)
-			{
-				Shuffle(t);
 				children.Add(t);
-			}
 		}
 		else
 		{
-			Shuffle(_transform);
+            children.Add(_transform);
 		}
 	}
 
+    public void Shuffle()
+    {
+        foreach (Transform t in children)
+            Shuffle(t);
+    }
+
 	private void Shuffle(Transform target)
 	{
-		/*
-		Vector3w pos = new Vector3(Random.Range(-maxPositionDelta.x, maxPositionDelta.x),
-			Random.Range(-maxPositionDelta.y, maxPositionDelta.y),
-			Random.Range(-maxPositionDelta.z, maxPositionDelta.z));
-		*/
-
-		Vector3 pos = Vector3.Scale(Random.insideUnitSphere, maxPositionDelta);
-		Quaternion rot = Quaternion.Euler(Vector3.Scale(Random.insideUnitSphere, maxRotationDelta));
-		Vector3 scale = Vector3.Scale(Random.insideUnitSphere, maxScaleDelta);
+		Vector3 pos = Vector3.Scale(Random.onUnitSphere, maxPositionDelta);
+		Quaternion rot = Quaternion.Euler(Vector3.Scale(Random.onUnitSphere, maxRotationDelta));
+		Vector3 scale = Vector3.Scale(Random.onUnitSphere, maxScaleDelta);
 
 		target.position += pos;
 		target.rotation *= rot;

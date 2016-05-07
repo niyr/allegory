@@ -10,6 +10,9 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private Vector3 spin;
 
+    public float explosionLerpTime = 0.3f;
+    public float reassembleLerpTime = 1f;
+
     public Memory memory;
     public Transform target;
     public int groupId;
@@ -47,7 +50,7 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     #region Interfaces
     public void OnPointerClick(PointerEventData eventData)
     {
-        ReturnToBase();
+        Reassemble();
 
         OnSelected(this);
     }
@@ -76,7 +79,8 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     /// </summary>
     public void Explode(Vector3 targetPosition)
     {
-        StartCoroutine(CR_Explode(targetPosition, 0.2f));
+        float duration = Random.Range(0.9f, 1.1f) * explosionLerpTime;
+        StartCoroutine(CR_Explode(targetPosition, duration));
     }
 
     private IEnumerator CR_Explode(Vector3 targetPos, float duration = 0.2f)
@@ -100,9 +104,9 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     /// <summary>
     /// 
     /// </summary>
-    public void ReturnToBase()
+    public void Reassemble()
     {
-        StartCoroutine(CR_ReturnToBase());
+        StartCoroutine(CR_ReturnToBase(reassembleLerpTime));
     }
 
     private IEnumerator CR_ReturnToBase(float duration = 1f)

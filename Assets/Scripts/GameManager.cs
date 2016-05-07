@@ -5,16 +5,10 @@ using System.Linq;
 
 public class GameManager : Singleton<GameManager>
 {
-    [Header("Cards / Windows")]
-    [SerializeField]
-    private Card sourceCard;
-    [SerializeField]
-    private Card[] cardClones = new Card[3];
-
     [Header("Options")]
     [SerializeField]
-    private List<GameObject> memoryPrefabs = new List<GameObject>();
-    private int currentMemory = 0;
+    private List<Memory> memories = new List<Memory>();
+    private int currentMemoryIndex = 0;
 
     [Header("For Debugging")]
     [SerializeField]
@@ -29,45 +23,39 @@ public class GameManager : Singleton<GameManager>
     // Score tracking
     private int correctChoices = 0;
 
-	#region MonoBehaviour Lifecycle
-	protected void Awake()
+    #region Properties
+    public Memory CurrentMemory { get { return memories[currentMemoryIndex]; } }
+    #endregion
+
+    #region MonoBehaviour Lifecycle
+    protected void Awake()
 	{
-        Card.OnCardClicked += OnCardClicked;
+        Memory.OnComplete += OnMemoryComplete;
 	}
 
     protected void Start()
     {
-        currentMemory = -1;
+        currentMemoryIndex = -1;
         NextMemory();
     }
     #endregion
 
     #region Events
-    private void OnCardClicked(Card chosen)
+    private void OnMemoryComplete(Memory completed, float accuracy)
     {
-        if (chosen.IsSourceCard)
-        {
-            chosen.RotateAway(ShowClonedCards);
-        }
-        else
-        {
-            if (chosen.IsClosest)
-                correctChoices++;
 
-            StartCoroutine(CR_HideClones());
-        }
     }
     #endregion
 
     public void NextMemory()
     {
-        currentMemory++;
-        if(currentMemory >= memoryPrefabs.Count)
+        currentMemoryIndex++;
+        if(currentMemoryIndex == memories.Count)
         {
             if (loopMemories)
             {
                 Debug.Log("[GameManager]::Reached end of memory sequence. Restarting.");
-                currentMemory = 0;
+                currentMemoryIndex = 0;
             }
             else
             {
@@ -76,60 +64,7 @@ public class GameManager : Singleton<GameManager>
             }
         }
 
-        // Create a clone of the memory and insert it into the original card
-        GameObject original = Instantiate(memoryPrefabs[currentMemory]);
-        sourceCard.AttachMemory(original, 0f);
-
-        // Create clones of the memory to insert into the cloned cards,
-        //  with varying degrees of difference
-        foreach (Card card in cardClones)
-        {
-            GameObject clone = Instantiate(memoryPrefabs[currentMemory]);
-            // TODO: get this as a spread of values rather than pure random
-            float difference = Random.Range(0f, 1f);
-            card.AttachMemory(clone, difference);
-            card.gameObject.SetActive(false);
-        }
-
-        // Set the card with the least difference to be the 'right' choice
-        cardClones.OrderByDescending(card => card.Difference).Last().IsClosest = true;
-
-        ShowOriginalCard();
-    }
-
-    public void ShowOriginalCard()
-    {
-        sourceCard.RotateTowards();
-    }
-
-    public void ShowClonedCards()
-    {
-        foreach (Card c in cardClones)
-            c.RotateTowards();
-    }
-
-    private IEnumerator CR_HideClones()
-    {
-        foreach (Card c in cardClones)
-        {
-            yield return new WaitForSeconds(0.1f);
-            c.RotateAway();
-        }
-
-        bool isRotating = true;
-        while(isRotating)
-        {
-            yield return null;
-
-            isRotating = cardClones.Where(c => c.IsRotating == true).ToArray().Length == cardClones.Length;
-        }
-
-        yield return new WaitForSeconds(2f);
-
-        // TODO: debugging only
-        if (repeatMemory)
-            currentMemory--;
-
-        NextMemory();
+        // Create the memory, it handles the rest
+        GameObject memory = Instantiate(memories[currentMemoryIndex].gameObject);
     }
 }

@@ -8,6 +8,9 @@ public class Reticule : MonoBehaviour
     private Transform _transform;
     private Animator _animator;
 
+    [SerializeField]
+    private bool disableCursor = true;
+
     private static readonly int HOVER_PARAM = Animator.StringToHash("isHovering");
     private static readonly int MOUSEDOWN_PARAM = Animator.StringToHash("isMouseDown");
 
@@ -15,8 +18,8 @@ public class Reticule : MonoBehaviour
     {
         _transform = GetComponent<Transform>();
         _animator = GetComponent<Animator>();
-
-        Cursor.visible = false;
+        
+        Cursor.visible = !disableCursor;
     }
 
     protected void Update()

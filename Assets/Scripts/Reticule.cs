@@ -8,6 +8,8 @@ public class Reticule : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     private Transform _transform;
     private Animator _animator;
 
+    private float zDepth;
+
     private static readonly int HOVER_PARAM = Animator.StringToHash("isHovering");
     private static readonly int CLICK_PARAM = Animator.StringToHash("isMouseDown");
 
@@ -16,14 +18,19 @@ public class Reticule : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
         _transform = GetComponent<Transform>();
         _animator = GetComponent<Animator>();
 
+        zDepth = _transform.localPosition.z;
+
         //Cursor.visible = false;
     }
 
     protected void Update()
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        _transform.position = mousePos;
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = zDepth;
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        //Debug.Log(mousePos);
+        //Debug.Log(worldPos);
+        _transform.localPosition = GetWorldPositionOnPlane(Input.mousePosition, 0f);
     }
 
     protected void OnMouseEnter()
@@ -52,4 +59,13 @@ public class Reticule : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     }
     #endregion
+
+    private Vector3 GetWorldPositionOnPlane(Vector3 screenPosition, float z)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(screenPosition);
+        Plane xy = new Plane(Vector3.forward, new Vector3(0, 0, z));
+        float distance;
+        xy.Raycast(ray, out distance);
+        return ray.GetPoint(distance);
+    }
 }

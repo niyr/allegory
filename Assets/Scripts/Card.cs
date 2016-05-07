@@ -15,6 +15,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     private bool isRotating;
 
     private GameObject attachedMemory;
+    private float difference;
 
     [Header("Sounds")]
     [SerializeField]
@@ -37,6 +38,8 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     #region Properties
     public bool IsSourceCard { get { return isSourceCard; } }
     public bool IsRotating { get { return isRotating; } }
+    public bool IsClosest { get; set; }
+    public float Difference { get { return difference; } }
     #endregion
 
     #region MonoBehaviour Lifecycle
@@ -52,11 +55,6 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         OnCardClicked += Card_OnCardClicked;
 
         gameObject.SetActive(false);
-    }
-
-    protected void Start()
-    {
-
     }
     #endregion
 
@@ -93,7 +91,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             Destroy(attachedMemory);
     }
 
-    public void AttachMemory(GameObject memory)
+    public void AttachMemory(GameObject memory, float maxDifference = 1f)
     {
         if(memory == null)
         {
@@ -104,10 +102,13 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         if (attachedMemory != null)
             Clear();
 
+        IsClosest = false;
+        difference = maxDifference;
+
         memory.transform.SetParent(_transform, false);
         Shuffler[] shufflers = memory.GetComponentsInChildren<Shuffler>();
         foreach (Shuffler s in shufflers)
-            s.Shuffle();
+            s.Shuffle(maxDifference);
 
         attachedMemory = memory;
     }

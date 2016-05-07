@@ -3,11 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-	private static GameManager instance;
-	public static GameManager Instance { get { return instance; } }
-
     [Header("Cards / Windows")]
     [SerializeField]
     private Card sourceCard;
@@ -28,17 +25,6 @@ public class GameManager : MonoBehaviour
 	#region MonoBehaviour Lifecycle
 	protected void Awake()
 	{
-		if (instance != null && instance != this)
-		{
-			Destroy(gameObject);
-			return;
-		}
-		else
-		{
-			instance = this;
-			DontDestroyOnLoad(gameObject);
-		}
-
         Card.OnCardClicked += OnCardClicked;
 	}
 
@@ -82,10 +68,12 @@ public class GameManager : MonoBehaviour
         foreach (Card card in cardClones)
         {
             GameObject clone = Instantiate(memoryPrefabs[currentMemory]);
-            card.Clear();
-            card.AttachMemory(clone);
+            float difference = Random.Range(0f, 1f);
+            card.AttachMemory(clone, difference);
             card.gameObject.SetActive(false);
         }
+
+        cardClones.OrderByDescending(card => card.Difference).Last().IsClosest = true;
 
         ShowOriginalCard();
     }

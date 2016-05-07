@@ -64,7 +64,6 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public virtual void OnPointerClick(PointerEventData ped)
     {
         OnCardClicked(this);
-        Debug.Log(gameObject.name + " clicked");
     }
 
     public void OnPointerEnter(PointerEventData eventData)

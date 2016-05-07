@@ -42,6 +42,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionLerpTime: 0.2
   reassembleLerpTime: 1
+  lineMaterial: {fileID: 2100000, guid: d1464985373435f46b65763026478164, type: 2}
 --- !u!135 &13551420
 SphereCollider:
   m_ObjectHideFlags: 1

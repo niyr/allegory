@@ -19,6 +19,12 @@ public class GameManager : MonoBehaviour
     private List<GameObject> memoryPrefabs = new List<GameObject>();
     private int currentMemory = 0;
 
+    [Header("For Debugging")]
+    [SerializeField]
+    private bool repeatMemory;
+    [SerializeField]
+    private bool loopMemories;
+
 	#region MonoBehaviour Lifecycle
 	protected void Awake()
 	{
@@ -58,8 +64,16 @@ public class GameManager : MonoBehaviour
         currentMemory++;
         if(currentMemory >= memoryPrefabs.Count)
         {
-            Debug.Log("Game Over");
-            return;
+            if (loopMemories)
+            {
+                Debug.Log("[GameManager]::Reached end of memory sequence. Restarting.");
+                currentMemory = 0;
+            }
+            else
+            {
+                Debug.Log("[GameManager]::End of memory sequence.");
+                return;
+            }
         }
 
         GameObject original = Instantiate(memoryPrefabs[currentMemory]);
@@ -104,6 +118,10 @@ public class GameManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(2f);
+
+        // TODO: debugging only
+        if (repeatMemory)
+            currentMemory--;
 
         NextMemory();
     }

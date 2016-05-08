@@ -19,6 +19,7 @@
 			"CanUseSpriteAtlas" = "True"
 		}
 
+		Cull Off
 		Lighting Off
 		ZWrite Off
 		Fog { Mode Global }

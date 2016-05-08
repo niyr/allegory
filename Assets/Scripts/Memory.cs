@@ -13,8 +13,6 @@ public class Memory : MonoBehaviour
     public List<GameObject> pieces = new List<GameObject>();
     private List<Fragment> fragments = new List<Fragment>();
 
-    private int assembledFragments = 0;
-
     private static readonly int HOVER_PARAM = Animator.StringToHash("isHovering");
 
     // Events
@@ -22,7 +20,7 @@ public class Memory : MonoBehaviour
     public static event CompleteDelegate OnComplete = delegate { };
 
     #region Properties
-    private bool IsComplete { get { return assembledFragments == pieces.Count; } }
+    private bool IsComplete { get { return fragments.Count == pieces.Count; } }
     #endregion
 
     #region MonoBehaviour Lifecycle
@@ -72,7 +70,8 @@ public class Memory : MonoBehaviour
 
     private void OnFragmentSelected(Fragment selected)
     {
-        assembledFragments++;
+        selected.transform.SetParent(_transform);
+        fragments.Add(selected);
 
         if(IsComplete)
         {
@@ -102,8 +101,6 @@ public class Memory : MonoBehaviour
 
                 Vector3 moveTo = groupLoc + Random.insideUnitSphere * 5f;
                 fragment.Init(this, i, orig.transform, moveTo);
-
-                fragments.Add(fragment);
             }
 
             orig.SetActive(false);
@@ -144,6 +141,8 @@ public class Memory : MonoBehaviour
 
         Vector3 startPos = _transform.position;
         Vector3 endPos = Camera.main.transform.position - new Vector3(0, 0, 1);
+
+        yield return new WaitForSeconds(1f);
 
         for(float t = 0f; t < 1f; t += Time.deltaTime * 0.5f)
         {

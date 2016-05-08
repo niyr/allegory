@@ -48,12 +48,13 @@ public class Fragment : MonoBehaviour
 
     protected void Update()
     {
-        if(!isMoving)
-            transform.Rotate(spin);
+        if (!isMoving)
+            transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
     }
 
     protected void OnDestroy()
     {
+        VectorLine.Destroy(ref line);
         OnSelected -= OnFragmentSelected;
     }
     #endregion

@@ -54,7 +54,6 @@ public class Memory : MonoBehaviour
     private void OnGazeEnter(GazeHandler target)
     {
         //_animator.SetBool(HOVER_PARAM, true);
-        Debug.Log("gaze entered");
     }
 
     private void OnGazeExit(GazeHandler target)
@@ -83,14 +82,12 @@ public class Memory : MonoBehaviour
 
     public void Shatter()
     {
-        //Vector3 center = (_transform.position - Camera.main.transform.position) * 0.5f;
-        Vector3 center = _transform.position;
         for(int i = 0; i < pieces.Count; i++)
         {
             GameObject orig = pieces[i];
 
             Vector2 random = Random.insideUnitCircle;
-            Vector3 groupLoc = center + new Vector3(random.x, random.y, 0) * 10f;
+            Vector3 groupLoc = GameManager.Instance.spawnPoints[i].position;
 
             for (int j = 0; j < 3; j++)
             {

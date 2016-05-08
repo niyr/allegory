@@ -5,10 +5,11 @@ using System.Linq;
 
 public class GameManager : Singleton<GameManager>
 {
-    [Header("Options")]
+    [Header("Memories")]
     [SerializeField]
     private List<Memory> memories = new List<Memory>();
     private int currentMemoryIndex = 0;
+    public List<Transform> spawnPoints = new List<Transform>();
 
     [Header("For Debugging")]
     [SerializeField]
@@ -71,6 +72,6 @@ public class GameManager : Singleton<GameManager>
         }
 
         // Create the memory, it handles the rest
-        GameObject memory = Instantiate(memories[currentMemoryIndex].gameObject);
+        Instantiate(memories[currentMemoryIndex].gameObject);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Vectrosity;
 
@@ -13,6 +14,7 @@ public class Fragment : MonoBehaviour
 
     public float explosionLerpTime = 0.3f;
     public float reassembleLerpTime = 1f;
+    public float fadeOutTime = 0.6f;
 
     private Memory parent;
     private Transform target;
@@ -167,12 +169,31 @@ public class Fragment : MonoBehaviour
     /// </summary>
     public void FadeOut()
     {
-        StartCoroutine(CR_FadeOut());
+        StartCoroutine(CR_FadeOut(fadeOutTime));
     }
 
-    private IEnumerator CR_FadeOut()
+    private IEnumerator CR_FadeOut(float duration = 1f)
     {
-        yield return new WaitForSeconds(0.1f);
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>();
+        Color[] originalColors = renderers.Select(x => x.color).ToArray();
+        Color[] targetColors = new Color[originalColors.Length];
+        for(int i = 0; i < originalColors.Length; i++)
+        {
+            originalColors[i].a *= 0.8f;
+            targetColors[i] = originalColors[i];
+            targetColors[i].a = 0f;
+        }
+
+        float speed = 1f / duration;
+        for (float t = 0f; t < 1f; t += Time.deltaTime * speed)
+        {
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].color = Color.Lerp(originalColors[i], targetColors[i], t);
+            }
+
+            yield return null;
+        }
 
         Destroy(gameObject);
     }

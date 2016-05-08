@@ -48,7 +48,7 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
-    private IEnumerator CR_NextMemory(float delay = 4f)
+    private IEnumerator CR_NextMemory(float delay = 5f)
     {
         yield return new WaitForSeconds(delay);
         NextMemory();

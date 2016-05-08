@@ -54,11 +54,19 @@ public class Memory : MonoBehaviour
     private void OnGazeEnter(GazeHandler target)
     {
         //_animator.SetBool(HOVER_PARAM, true);
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            pieces[i].transform.position -= new Vector3(0, 0, 2) * i;
+        }
     }
 
     private void OnGazeExit(GazeHandler target)
     {
         //_animator.SetBool(HOVER_PARAM, false);
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            pieces[i].transform.position += new Vector3(0, 0, 2) * i;
+        }
     }
 
     private void OnGazeLocked(GazeHandler target)
@@ -96,7 +104,7 @@ public class Memory : MonoBehaviour
                 Fragment fragment = newFragment.GetComponent<Fragment>();
                 go.transform.SetParent(fragment.transform, false);
 
-                Vector3 moveTo = groupLoc + Random.insideUnitSphere * 5f;
+                Vector3 moveTo = groupLoc + Random.onUnitSphere * 4f;
                 fragment.Init(this, i, orig.transform, moveTo);
             }
 
@@ -139,7 +147,7 @@ public class Memory : MonoBehaviour
         Vector3 startPos = _transform.position;
         Vector3 endPos = Camera.main.transform.position - new Vector3(0, 0, 1);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
 
         for(float t = 0f; t < 1f; t += Time.deltaTime * 0.5f)
         {

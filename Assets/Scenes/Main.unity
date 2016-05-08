@@ -15,9 +15,9 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 6
   m_Fog: 1
-  m_FogColor: {r: 1, g: 1, b: 1, a: 1}
-  m_FogMode: 2
-  m_FogDensity: 0.05
+  m_FogColor: {r: 0.88235295, g: 0.88235295, b: 0.88235295, a: 1}
+  m_FogMode: 3
+  m_FogDensity: 0.02
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -184,7 +184,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 467384, guid: fc29fcca91cb7144a862233d1d61ac58, type: 2}
       propertyPath: m_RootOrder
-      value: 13
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fc29fcca91cb7144a862233d1d61ac58, type: 2}
@@ -845,6 +845,48 @@ Transform:
   - {fileID: 658970194}
   m_Father: {fileID: 0}
   m_RootOrder: 5
+--- !u!1001 &905078804
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 473644, guid: f345f85289507cd40b56333a9b7c452e, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 473644, guid: f345f85289507cd40b56333a9b7c452e, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 473644, guid: f345f85289507cd40b56333a9b7c452e, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 28.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 473644, guid: f345f85289507cd40b56333a9b7c452e, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 473644, guid: f345f85289507cd40b56333a9b7c452e, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 473644, guid: f345f85289507cd40b56333a9b7c452e, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 473644, guid: f345f85289507cd40b56333a9b7c452e, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 473644, guid: f345f85289507cd40b56333a9b7c452e, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: f345f85289507cd40b56333a9b7c452e, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &941451366
 GameObject:
   m_ObjectHideFlags: 0
@@ -1349,6 +1391,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 439128, guid: 98528220ebd9c6f44a10803ec245ef91, type: 2}
       propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11445976, guid: 98528220ebd9c6f44a10803ec245ef91, type: 2}
+      propertyPath: disableCursor
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

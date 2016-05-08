@@ -31,6 +31,8 @@ public class Memory : MonoBehaviour
         _animator = GetComponent<Animator>();
         _gazeHandler = GetComponent<GazeHandler>();
 
+        _collider.enabled = false;
+
         _gazeHandler.OnGazeEnter += OnGazeEnter;
         _gazeHandler.OnGazeExit += OnGazeExit;
         _gazeHandler.OnGazeLocked += OnGazeLocked;
@@ -56,7 +58,10 @@ public class Memory : MonoBehaviour
         //_animator.SetBool(HOVER_PARAM, true);
         for (int i = 0; i < pieces.Count; i++)
         {
-            pieces[i].transform.position -= new Vector3(0, 0, 2) * i;
+            StartCoroutine(CR_LerpTo(pieces[i].transform,
+                pieces[i].transform.localPosition,
+                pieces[i].transform.localPosition - new Vector3(0, 0, 1 * (i + 1)),
+                0.25f));
         }
     }
 
@@ -65,7 +70,10 @@ public class Memory : MonoBehaviour
         //_animator.SetBool(HOVER_PARAM, false);
         for (int i = 0; i < pieces.Count; i++)
         {
-            pieces[i].transform.position += new Vector3(0, 0, 2) * i;
+            StartCoroutine(CR_LerpTo(pieces[i].transform,
+                pieces[i].transform.localPosition,
+                pieces[i].transform.localPosition + new Vector3(0, 0, 1 * (i + 1)),
+                0.25f));
         }
     }
 
@@ -156,5 +164,17 @@ public class Memory : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    private IEnumerator CR_LerpTo(Transform target, Vector3 from, Vector3 to, float duration)
+    {
+        float speed = 1f / duration;
+        for(float t = 0f; t < 1f; t += Time.deltaTime * speed)
+        {
+            target.localPosition = Vector3.Lerp(from, to, t);
+            yield return null;
+        }
+
+        target.localPosition = to;
     }
 }

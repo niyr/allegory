@@ -1,19 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.EventSystems;
 
-public class Memory : MonoBehaviour, IPointerClickHandler
+public class Memory : MonoBehaviour
 {
     // CACHED COMPONENTS
     private Transform _transform;
     private Collider _collider;
+    private Animator _animator;
+    private GazeHandler _gazeHandler;
 
     public List<GameObject> pieces = new List<GameObject>();
-
     private List<Fragment> fragments = new List<Fragment>();
 
     private int assembledFragments = 0;
+
+    private static readonly int HOVER_PARAM = Animator.StringToHash("isHovering");
 
     // Events
     public delegate void CompleteDelegate(Memory completedMemory, float accuracy);
@@ -28,6 +30,12 @@ public class Memory : MonoBehaviour, IPointerClickHandler
     {
         _transform = GetComponent<Transform>();
         _collider = GetComponent<Collider>();
+        _animator = GetComponent<Animator>();
+        _gazeHandler = GetComponent<GazeHandler>();
+
+        _gazeHandler.OnGazeEnter += OnGazeEnter;
+        _gazeHandler.OnGazeExit += OnGazeExit;
+        _gazeHandler.OnGazeLocked += OnGazeLocked;
 
         Fragment.OnSelected += OnFragmentSelected;
     }
@@ -44,15 +52,24 @@ public class Memory : MonoBehaviour, IPointerClickHandler
     }
     #endregion
 
-    #region Interfaces
-    public void OnPointerClick(PointerEventData eventData)
+    #region Events
+    private void OnGazeEnter(GazeHandler target)
     {
-        if(!IsComplete)
+        //_animator.SetBool(HOVER_PARAM, true);
+        Debug.Log("gaze entered");
+    }
+
+    private void OnGazeExit(GazeHandler target)
+    {
+        //_animator.SetBool(HOVER_PARAM, false);
+    }
+
+    private void OnGazeLocked(GazeHandler target)
+    {
+        if (!IsComplete)
             Shatter();
     }
-    #endregion
 
-    #region Events
     private void OnFragmentSelected(Fragment selected)
     {
         assembledFragments++;
@@ -104,8 +121,8 @@ public class Memory : MonoBehaviour, IPointerClickHandler
     {
         _collider.enabled = false;
 
-        Vector3 startPos = transform.position + new Vector3(0, 0, 60);
-        Vector3 endPos = transform.position;
+        Vector3 startPos = _transform.position + new Vector3(0, 0, 60);
+        Vector3 endPos = _transform.position;
 
         for (float t = 0f; t < 1f; t += Time.deltaTime * 0.5f)
         {
@@ -125,13 +142,15 @@ public class Memory : MonoBehaviour, IPointerClickHandler
     {
         _collider.enabled = false;
 
-        Vector3 startPos = transform.position;
+        Vector3 startPos = _transform.position;
         Vector3 endPos = Camera.main.transform.position - new Vector3(0, 0, 1);
 
         for(float t = 0f; t < 1f; t += Time.deltaTime * 0.5f)
         {
-            transform.position = Vector3.Lerp(startPos, endPos, t);
+            _transform.position = Vector3.Lerp(startPos, endPos, t);
             yield return null;
         }
+
+        Destroy(gameObject);
     }
 }

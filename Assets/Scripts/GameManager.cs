@@ -43,9 +43,15 @@ public class GameManager : Singleton<GameManager>
     #region Events
     private void OnMemoryComplete(Memory completed, float accuracy)
     {
-        NextMemory();
+        StartCoroutine(CR_NextMemory());
     }
     #endregion
+
+    private IEnumerator CR_NextMemory(float delay = 4f)
+    {
+        yield return new WaitForSeconds(delay);
+        NextMemory();
+    }
 
     public void NextMemory()
     {

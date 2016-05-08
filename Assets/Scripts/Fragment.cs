@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using Vectrosity;
 
 using Random = UnityEngine.Random;
 
-public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class Fragment : MonoBehaviour
 {
     // CACHED COMPONENTS
     private Collider _collider;
+    private GazeHandler _gazeHandler;
 
     public float explosionLerpTime = 0.3f;
     public float reassembleLerpTime = 1f;
@@ -32,6 +32,11 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     protected void Awake()
     {
         _collider = GetComponent<Collider>();
+        _gazeHandler = GetComponent<GazeHandler>();
+
+        _gazeHandler.OnGazeEnter += OnGazeEnter;
+        _gazeHandler.OnGazeExit += OnGazeExit;
+        _gazeHandler.OnGazeLocked += OnGazeLocked;
     }
 
     protected void Start()
@@ -53,26 +58,23 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
     #endregion
 
-    #region Interfaces
-    public void OnPointerClick(PointerEventData eventData)
+    #region Events
+    private void OnGazeEnter(GazeHandler target)
+    {
+        //_animator.SetBool(HOVER_PARAM, true);
+    }
+
+    private void OnGazeExit(GazeHandler target)
+    {
+        //_animator.SetBool(HOVER_PARAM, false);
+    }
+
+    private void OnGazeLocked(GazeHandler target)
     {
         Reassemble();
-
         OnSelected(this);
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        // TODO: highlight animation
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        // TODO: unhighlight animation
-    }
-    #endregion
-
-    #region Events
     private void OnFragmentSelected(Fragment selected)
     {
         if (selected.groupId == groupId && selected != this)

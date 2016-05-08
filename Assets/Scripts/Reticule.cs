@@ -18,7 +18,8 @@ public class Reticule : MonoBehaviour
     {
         _transform = GetComponent<Transform>();
         _animator = GetComponent<Animator>();
-        
+
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = !disableCursor;
     }
 

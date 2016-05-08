@@ -584,15 +584,16 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 412816}
-  - 114: {fileID: 11402740}
   - 65: {fileID: 6590104}
+  - 114: {fileID: 11402740}
+  - 114: {fileID: 11459402}
   m_Layer: 0
   m_Name: Memory_Uni
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &189180
 GameObject:
   m_ObjectHideFlags: 1
@@ -1278,6 +1279,17 @@ MonoBehaviour:
   maxScaleDelta: {x: 0.3, y: 0.3, z: 0}
   shuffleColor: 1
   hsbShift: {x: 0.03, y: 0.03, z: 0.03}
+--- !u!114 &11459402
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 189040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 929c59e2627b8c646935f0058ea10541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11460776
 MonoBehaviour:
   m_ObjectHideFlags: 1

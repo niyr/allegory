@@ -43,7 +43,7 @@ public class GameManager : Singleton<GameManager>
     #region Events
     private void OnMemoryComplete(Memory completed, float accuracy)
     {
-
+        NextMemory();
     }
     #endregion
 

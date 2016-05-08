@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51abd4f195d043b40ba6aa729ff253bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionLerpTime: 0.2
+  explosionLerpTime: 0.7
   reassembleLerpTime: 1
   lineMaterial: {fileID: 2100000, guid: d1464985373435f46b65763026478164, type: 2}
 --- !u!135 &13551420

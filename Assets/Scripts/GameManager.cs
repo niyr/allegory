@@ -8,7 +8,7 @@ public class GameManager : Singleton<GameManager>
     [Header("Memories")]
     [SerializeField]
     private List<Memory> memories = new List<Memory>();
-    private int currentMemoryIndex = 0;
+    private int currentMemoryIndex = -1;
     public List<Transform> spawnPoints = new List<Transform>();
 
     [Header("For Debugging")]
@@ -36,8 +36,7 @@ public class GameManager : Singleton<GameManager>
 
     protected void Start()
     {
-        currentMemoryIndex = -1;
-        NextMemory();
+        //NextMemory();
     }
     #endregion
 

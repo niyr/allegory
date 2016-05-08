@@ -12,7 +12,7 @@ public class MouseLook : MonoBehaviour
     private float yaw;
     private float pitch;
 
-    private float dpiFactor;
+    private float dpiFactor = 1f;
     private const float REF_DPI = 72f;
 
     void Awake()
@@ -39,8 +39,8 @@ public class MouseLook : MonoBehaviour
         float deltaX = Input.GetAxis("Mouse X");
         float deltaY = Input.GetAxis("Mouse Y");
 
-        yaw = deltaX * speed * dpiFactor;
-        pitch = deltaY * speed * dpiFactor * -1f;
+        yaw = deltaX * speed;
+        pitch = deltaY * speed * -1f;
 
         lookatRotation.y = yaw;
         lookatRotation.x = pitch;

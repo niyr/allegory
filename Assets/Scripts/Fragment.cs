@@ -124,10 +124,12 @@ public class Fragment : MonoBehaviour
         transform.position = targetPos;
         _collider.enabled = true;
 
+        /*
         List<Vector3> linePoints = new List<Vector3> { transform.position, target.position };
         line = new VectorLine("fragment_line", linePoints, 1f, LineType.Continuous, Joins.Weld);
         line.material = lineMaterial;
         line.continuousTexture = true;
+        */
 
         //line.Draw3DAuto();
     }

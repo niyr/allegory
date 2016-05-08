@@ -59,8 +59,8 @@ public class Memory : MonoBehaviour, IPointerClickHandler
 
         if(IsComplete)
         {
-            Debug.Log("Complete");
             OnComplete(this, 0f);
+            AnimateOut();
         }
     }
     #endregion

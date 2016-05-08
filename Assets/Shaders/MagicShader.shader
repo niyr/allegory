@@ -83,7 +83,7 @@
 				c.a -= add.r;
 
 				UNITY_APPLY_FOG(IN.fogCoord, c);
-                UNITY_OPAQUE_ALPHA(c.a);
+                //UNITY_OPAQUE_ALPHA(c.a);
 
 				return c;
 			}

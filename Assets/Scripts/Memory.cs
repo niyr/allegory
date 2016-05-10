@@ -1,26 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.EventSystems;
 
-public class Memory : MonoBehaviour, IPointerClickHandler
+public class Memory : MonoBehaviour
 {
     // CACHED COMPONENTS
     private Transform _transform;
     private Collider _collider;
+    private Animator _animator;
+    private GazeHandler _gazeHandler;
 
     public List<GameObject> pieces = new List<GameObject>();
-
     private List<Fragment> fragments = new List<Fragment>();
 
-    private int assembledFragments = 0;
+    private static readonly int HOVER_PARAM = Animator.StringToHash("isHovering");
 
     // Events
     public delegate void CompleteDelegate(Memory completedMemory, float accuracy);
     public static event CompleteDelegate OnComplete = delegate { };
 
     #region Properties
-    private bool IsComplete { get { return assembledFragments == pieces.Count; } }
+    private bool IsComplete { get { return fragments.Count == pieces.Count; } }
     #endregion
 
     #region MonoBehaviour Lifecycle
@@ -28,6 +28,14 @@ public class Memory : MonoBehaviour, IPointerClickHandler
     {
         _transform = GetComponent<Transform>();
         _collider = GetComponent<Collider>();
+        _animator = GetComponent<Animator>();
+        _gazeHandler = GetComponent<GazeHandler>();
+
+        _collider.enabled = false;
+
+        _gazeHandler.OnGazeEnter += OnGazeEnter;
+        _gazeHandler.OnGazeExit += OnGazeExit;
+        _gazeHandler.OnGazeLocked += OnGazeLocked;
 
         Fragment.OnSelected += OnFragmentSelected;
     }
@@ -44,37 +52,58 @@ public class Memory : MonoBehaviour, IPointerClickHandler
     }
     #endregion
 
-    #region Interfaces
-    public void OnPointerClick(PointerEventData eventData)
+    #region Events
+    private void OnGazeEnter(GazeHandler target)
     {
-        if(!IsComplete)
+        //_animator.SetBool(HOVER_PARAM, true);
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            StartCoroutine(CR_LerpTo(pieces[i].transform,
+                pieces[i].transform.localPosition,
+                pieces[i].transform.localPosition - new Vector3(0, 0, 1 * (i + 1)),
+                0.25f));
+        }
+    }
+
+    private void OnGazeExit(GazeHandler target)
+    {
+        //_animator.SetBool(HOVER_PARAM, false);
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            StartCoroutine(CR_LerpTo(pieces[i].transform,
+                pieces[i].transform.localPosition,
+                pieces[i].transform.localPosition + new Vector3(0, 0, 1 * (i + 1)),
+                0.25f));
+        }
+    }
+
+    private void OnGazeLocked(GazeHandler target)
+    {
+        if (!IsComplete)
             Shatter();
     }
-    #endregion
 
-    #region Events
     private void OnFragmentSelected(Fragment selected)
     {
-        assembledFragments++;
+        selected.transform.SetParent(_transform);
+        fragments.Add(selected);
 
         if(IsComplete)
         {
-            Debug.Log("Complete");
             OnComplete(this, 0f);
+            AnimateOut();
         }
     }
     #endregion
 
     public void Shatter()
     {
-        //Vector3 center = (_transform.position - Camera.main.transform.position) * 0.5f;
-        Vector3 center = _transform.position;
         for(int i = 0; i < pieces.Count; i++)
         {
             GameObject orig = pieces[i];
 
             Vector2 random = Random.insideUnitCircle;
-            Vector3 groupLoc = center + new Vector3(random.x, random.y, 0) * 10f;
+            Vector3 groupLoc = GameManager.Instance.spawnPoints[i].position;
 
             for (int j = 0; j < 3; j++)
             {
@@ -83,10 +112,8 @@ public class Memory : MonoBehaviour, IPointerClickHandler
                 Fragment fragment = newFragment.GetComponent<Fragment>();
                 go.transform.SetParent(fragment.transform, false);
 
-                Vector3 moveTo = groupLoc + Random.insideUnitSphere * 5f;
+                Vector3 moveTo = groupLoc + Random.onUnitSphere * 4f;
                 fragment.Init(this, i, orig.transform, moveTo);
-
-                fragments.Add(fragment);
             }
 
             orig.SetActive(false);
@@ -104,8 +131,8 @@ public class Memory : MonoBehaviour, IPointerClickHandler
     {
         _collider.enabled = false;
 
-        Vector3 startPos = transform.position + new Vector3(0, 0, 60);
-        Vector3 endPos = transform.position;
+        Vector3 startPos = _transform.position + new Vector3(0, 0, 60);
+        Vector3 endPos = _transform.position;
 
         for (float t = 0f; t < 1f; t += Time.deltaTime * 0.5f)
         {
@@ -125,13 +152,29 @@ public class Memory : MonoBehaviour, IPointerClickHandler
     {
         _collider.enabled = false;
 
-        Vector3 startPos = transform.position;
+        Vector3 startPos = _transform.position;
         Vector3 endPos = Camera.main.transform.position - new Vector3(0, 0, 1);
+
+        yield return new WaitForSeconds(2f);
 
         for(float t = 0f; t < 1f; t += Time.deltaTime * 0.5f)
         {
-            transform.position = Vector3.Lerp(startPos, endPos, t);
+            _transform.position = Vector3.Lerp(startPos, endPos, t);
             yield return null;
         }
+
+        Destroy(gameObject);
+    }
+
+    private IEnumerator CR_LerpTo(Transform target, Vector3 from, Vector3 to, float duration)
+    {
+        float speed = 1f / duration;
+        for(float t = 0f; t < 1f; t += Time.deltaTime * speed)
+        {
+            target.localPosition = Vector3.Lerp(from, to, t);
+            yield return null;
+        }
+
+        target.localPosition = to;
     }
 }

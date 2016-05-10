@@ -5,10 +5,11 @@ using System.Linq;
 
 public class GameManager : Singleton<GameManager>
 {
-    [Header("Options")]
+    [Header("Memories")]
     [SerializeField]
     private List<Memory> memories = new List<Memory>();
-    private int currentMemoryIndex = 0;
+    private int currentMemoryIndex = -1;
+    public List<Transform> spawnPoints = new List<Transform>();
 
     [Header("For Debugging")]
     [SerializeField]
@@ -35,17 +36,22 @@ public class GameManager : Singleton<GameManager>
 
     protected void Start()
     {
-        currentMemoryIndex = -1;
-        NextMemory();
+        //NextMemory();
     }
     #endregion
 
     #region Events
     private void OnMemoryComplete(Memory completed, float accuracy)
     {
-
+        StartCoroutine(CR_NextMemory());
     }
     #endregion
+
+    private IEnumerator CR_NextMemory(float delay = 5f)
+    {
+        yield return new WaitForSeconds(delay);
+        NextMemory();
+    }
 
     public void NextMemory()
     {
@@ -65,6 +71,6 @@ public class GameManager : Singleton<GameManager>
         }
 
         // Create the memory, it handles the rest
-        GameObject memory = Instantiate(memories[currentMemoryIndex].gameObject);
+        Instantiate(memories[currentMemoryIndex].gameObject);
     }
 }

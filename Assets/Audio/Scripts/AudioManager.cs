@@ -72,8 +72,6 @@ namespace ChaosTheoryGames.Audio
 
             for(int i = 0; i < minCapacity; i++)
                 availableSounds.Push(new SoundWrapper(this));
-
-            Card.OnCardHighlighted += OnCardHighlighted;
         }
 
         protected void Update()
@@ -102,7 +100,7 @@ namespace ChaosTheoryGames.Audio
         #endregion
 
         #region Events
-        private void OnCardHighlighted(Card highlightedCard, bool isHighlighted)
+        private void OnMemoryHighlighted(Memory target, bool isHighlighted)
         {
             if (isHighlighted)
                 highlightedSnapshot.TransitionTo(transitionTime);

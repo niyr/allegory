@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using Vectrosity;
 
 using Random = UnityEngine.Random;
 
-public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class Fragment : MonoBehaviour
 {
     // CACHED COMPONENTS
     private Collider _collider;
+    private GazeHandler _gazeHandler;
 
     public float explosionLerpTime = 0.3f;
     public float reassembleLerpTime = 1f;
+    public float fadeOutTime = 0.6f;
 
     private Memory parent;
     private Transform target;
@@ -32,6 +34,11 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     protected void Awake()
     {
         _collider = GetComponent<Collider>();
+        _gazeHandler = GetComponent<GazeHandler>();
+
+        _gazeHandler.OnGazeEnter += OnGazeEnter;
+        _gazeHandler.OnGazeExit += OnGazeExit;
+        _gazeHandler.OnGazeLocked += OnGazeLocked;
     }
 
     protected void Start()
@@ -43,36 +50,34 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     protected void Update()
     {
-        if(!isMoving)
-            transform.Rotate(spin);
+        if (!isMoving)
+            transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
     }
 
     protected void OnDestroy()
     {
+        VectorLine.Destroy(ref line);
         OnSelected -= OnFragmentSelected;
     }
     #endregion
 
-    #region Interfaces
-    public void OnPointerClick(PointerEventData eventData)
+    #region Events
+    private void OnGazeEnter(GazeHandler target)
+    {
+        //_animator.SetBool(HOVER_PARAM, true);
+    }
+
+    private void OnGazeExit(GazeHandler target)
+    {
+        //_animator.SetBool(HOVER_PARAM, false);
+    }
+
+    private void OnGazeLocked(GazeHandler target)
     {
         Reassemble();
-
         OnSelected(this);
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        // TODO: highlight animation
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        // TODO: unhighlight animation
-    }
-    #endregion
-
-    #region Events
     private void OnFragmentSelected(Fragment selected)
     {
         if (selected.groupId == groupId && selected != this)
@@ -119,10 +124,12 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         transform.position = targetPos;
         _collider.enabled = true;
 
+        /*
         List<Vector3> linePoints = new List<Vector3> { transform.position, target.position };
         line = new VectorLine("fragment_line", linePoints, 1f, LineType.Continuous, Joins.Weld);
         line.material = lineMaterial;
         line.continuousTexture = true;
+        */
 
         //line.Draw3DAuto();
     }
@@ -164,12 +171,31 @@ public class Fragment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     /// </summary>
     public void FadeOut()
     {
-        StartCoroutine(CR_FadeOut());
+        StartCoroutine(CR_FadeOut(fadeOutTime));
     }
 
-    private IEnumerator CR_FadeOut()
+    private IEnumerator CR_FadeOut(float duration = 1f)
     {
-        yield return new WaitForSeconds(0.1f);
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>();
+        Color[] originalColors = renderers.Select(x => x.color).ToArray();
+        Color[] targetColors = new Color[originalColors.Length];
+        for(int i = 0; i < originalColors.Length; i++)
+        {
+            originalColors[i].a *= 0.8f;
+            targetColors[i] = originalColors[i];
+            targetColors[i].a = 0f;
+        }
+
+        float speed = 1f / duration;
+        for (float t = 0f; t < 1f; t += Time.deltaTime * speed)
+        {
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].color = Color.Lerp(originalColors[i], targetColors[i], t);
+            }
+
+            yield return null;
+        }
 
         Destroy(gameObject);
     }

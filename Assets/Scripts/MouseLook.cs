@@ -5,21 +5,14 @@ public class MouseLook : MonoBehaviour
 {
     public float speed = 1f;
 
-    [Tooltip("When enabled - Only activates for non-mobile builds. This is because GearVR or Cardboard has it's own system")]
     public bool nonMobileOnly = true;
-    
+
     private Vector3 lookatRotation = Vector3.zero;
-
-    private float mouseClickX;
-    private float mouseClickY;
-
-    private float clickedYaw;
-    private float clickedPitch;
 
     private float yaw;
     private float pitch;
 
-    private float dpiFactor;
+    private float dpiFactor = 1f;
     private const float REF_DPI = 72f;
 
     void Awake()
@@ -34,39 +27,24 @@ public class MouseLook : MonoBehaviour
     void Start()
     {
         dpiFactor = Screen.dpi / REF_DPI;
-        UpdateStartDragValues();
     }
     
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.LeftAlt))
-            //UpdateStartDragValues();
-
-        //if (Input.GetKey(KeyCode.LeftAlt))
-            UpdateRotation();
-    }
-
-    private void UpdateStartDragValues()
-    {
-        mouseClickX = Input.mousePosition.x;
-        mouseClickY = Input.mousePosition.y;
-
-        clickedYaw = yaw;
-        clickedPitch = pitch;
+        UpdateRotation();
     }
 
     private void UpdateRotation()
     {
-        // Reset the mouse positions to discard initial mouse offsets from app startup
-        float deltaX = Input.mousePosition.x - mouseClickX;
-        float deltaY = Input.mousePosition.y - mouseClickY;
+        float deltaX = Input.GetAxis("Mouse X");
+        float deltaY = Input.GetAxis("Mouse Y");
 
-        yaw = clickedYaw + (deltaX * speed * dpiFactor);
-        pitch = clickedPitch - (deltaY * speed * dpiFactor);
+        yaw = deltaX * speed;
+        pitch = deltaY * speed * -1f;
 
         lookatRotation.y = yaw;
         lookatRotation.x = pitch;
 
-        transform.localEulerAngles = lookatRotation;
+        transform.localEulerAngles += lookatRotation;
     }
 }
